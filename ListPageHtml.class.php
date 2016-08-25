@@ -185,4 +185,46 @@ ETO;
 
 }
 
+
+// 示例
+ $libs = array(
+    'id' => 'ID编号',
+    'title' => '组织活动名称',
+    'type' => array('类别', $zzhd_type),
+    'join_num' => '可参与人数',
+    'start_time' => '开始时间', //array('开始时间', '_set_dataformat'),
+    'end_time' => '结束时间', //array('结束时间', '_set_dataformat'),
+    'status' => array('状态', $zzhd_status),
+);
+$yy_url = $mod_url . '&op=view_zzhd_join_log&id={$data["id"]}';
+$listPageHtml = new ListPageHtml();
+$listPageHtml->listTableData = array(
+    'libs' => $libs,
+    'buttons' => array(
+        array('function' => array('get_show_button')),
+            array('name' => '修改', 'attr' => array(
+                    'class' => 'bggreen',
+                    'href' => $mod_url . '&op=edit_zzhd&id={$data["id"]}')
+            ),
+            array('name' => '删除', 'attr' => array(
+                    'class' => 'bgred',
+                    'href' => "javascript:;", 'onclick' => "deleteData('{$mod_url}&op=delete_zzhd&id={\$data['id']}')")
+            )
+    ),
+    'batch_buttons' => array(
+        array('value' => '批量删除', 'onclick' => "bathDelete('data_id[]','{$mod_url}&op=delete_zzhd')")
+    ),
+    'list_data' => $list_data,
+    'extra_function' => array('hiden_input')
+);
+//
+$listPageHtml->showBatchTable = true;
+echo $listPageHtml->createListTable();
+
+// 额外设置
+function hiden_input($data) {
+    $html = "<input type='hidden' id='dy_{$data['id']}' class='dy_id' value='{$data['id']}' />";
+    return $html;
+}
+
 ?>
