@@ -307,4 +307,76 @@ ETO;
 
 }
 
+
+// 实例一
+$elements = array(
+    array(
+        'title' => '标题',
+        'type' => 'text',
+        'attr' => array('class' => 'inputText', 'name' => "add_data[title]", 'value' => $data_info['title'])
+    ),
+    array(
+        'title' => '类型', 'type' => 'select',
+        'attr' => array('class' => '', 'id' => 'sel_wsxx_type', 'name' => "add_data[type]"),
+        'options' => array('list' => $list_wsxx_type, 'value' => (int) $data_info['type']),
+    ),
+    array(
+        'title' => '内容', 'type' => 'html',
+        'tr_attr' => array('class' => 'tr_text'),
+        'html' => $content_html,
+        'validator' => array('ignore' => 'ignore')
+    ),
+    array(
+        'title' => '封面图', 'type' => 'file',
+        'attr' => array('class' => '', 'name' => "cover_image"),
+        'validator' => array('ignore' => 'ignore'),
+        'extra_html' => $cover_image
+    ),
+);
+$formHtml = new FormHtml($elements, $hidden_elements);
+$formHtml->openValid = true;
+$formHtml->formAttr = array(
+    'id' => 'add_data_form', 'action' => "{$mod_url}&op=do_{$op}"
+);
+$formHtml->formButton = array(
+    array('type' => 'submit', 'value' => '确认提交'),
+    array(
+        'type' => 'button', 'value' => '返回列表',
+        'onclick' => "window.location.href='{$mod_url}&op=list_wsxx';"
+    ),
+);
+echo $formHtml->create();
+
+// 实例二
+$libs = array(
+    'type' => array('html', '类别', '', $zzhd_type),
+    'linkman' => array('html', '联系人'),
+    'contact' => array('html', '联系方式'),
+    'start_time' => array('html', '开始时间'),
+    'end_time' => array('html', '结束时间'),
+    'join_num' => array('html', '总参与人数'),
+    'status' => array('select', '审核状态', '', '', array('id' => 'sel_check_status'), array('list' => $sel_status)),
+    'check_reply' => array('textarea', '回复内容', '', '', array('id' => 'area_reply'))
+);
+$formHtml = new FormHtml($elements, $hidden_elements);
+$formHtml->openValid = true;
+// 文本模式，用于数据查看
+$formHtml->textModel = true;
+$formHtml->formAttr = array(
+    'id' => 'add_data_form', 'action' => "{$mod_url}&op=check_zzhd"
+);
+// 表单数据
+$formHtml->formData = array(
+    'libs' => $libs,
+    'data_info' => $data_info
+);
+$formHtml->formButton = array(
+    array('type' => 'submit', 'value' => '确认提交'),
+    array(
+        'type' => 'button', 'value' => '返回列表',
+        'onclick' => "window.location.href='{$mod_url}&op=list_check_zzhd';"
+    ),
+);
+echo $formHtml->create();
+
 ?>
